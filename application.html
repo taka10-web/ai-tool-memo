@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>応募内容（AIオペレーター共通フォーム）</title>
+<style>
+  :root {
+    --bg: #f5f6f8; --surface: #ffffff; --border: #dde1e6; --text: #1f2328;
+    --muted: #5b636d; --accent: #2557d6; --accent-soft: #eaf0fd;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #15171a; --surface: #1e2125; --border: #343a41; --text: #e8eaed;
+      --muted: #a0a7b0; --accent: #7aa2ff; --accent-soft: #1f2a44;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #15171a; --surface: #1e2125; --border: #343a41; --text: #e8eaed;
+    --muted: #a0a7b0; --accent: #7aa2ff; --accent-soft: #1f2a44;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: system-ui, -apple-system, "Hiragino Sans", "Yu Gothic UI", "Meiryo", sans-serif;
+    font-size: 15px; line-height: 1.75;
+  }
+  main { max-width: 820px; margin: 0 auto; padding: 32px 16px 64px; }
+  h1 { font-size: 1.5rem; line-height: 1.4; margin: 0 0 8px; }
+  .lead { color: var(--muted); margin: 0 0 24px; }
+  .notice {
+    background: var(--accent-soft); border-left: 4px solid var(--accent);
+    border-radius: 6px; padding: 12px 16px; margin-bottom: 24px;
+  }
+  .notice p { margin: 0; }
+  .notice p + p { margin-top: 6px; }
+  section {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 8px; padding: 20px 20px 8px; margin-bottom: 20px;
+  }
+  h2 {
+    font-size: 1.0625rem; margin: 0 0 12px; padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  h2 .step { color: var(--accent); font-size: 0.8125rem; margin-right: 8px; letter-spacing: 0.04em; }
+  dl { margin: 0; }
+  dt { font-weight: 600; font-size: 0.875rem; color: var(--muted); margin-top: 4px; }
+  dd { margin: 2px 0 16px; overflow-wrap: anywhere; }
+  .text { white-space: pre-wrap; }
+  ul.tags { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+  ul.tags li {
+    border: 1px solid var(--border); border-radius: 999px; padding: 0 10px;
+    font-size: 0.875rem; background: var(--bg);
+  }
+  a { color: var(--accent); }
+  footer { color: var(--muted); font-size: 0.8125rem; text-align: center; margin-top: 32px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>応募内容（AIオペレーター共通フォーム）</h1>
+  <p class="lead">在宅データ入力スタッフ（WordPress・AI活用）への応募内容です。</p>
+
+  <div class="notice">
+    <p>応募フォームで全項目を入力し、確認事項にも同意したうえで送信しましたが、「必須項目を入力してください。」と表示されて送信できませんでした。そのため、フォームに入力した内容をこのページにまとめて提出します。</p>
+    <p>氏名・連絡先は、お問い合わせフォームに記載しています。</p>
+  </div>
+
+  <section aria-labelledby="s1">
+    <h2 id="s1"><span class="step">STEP 1</span>実務課題とAI確認工程</h2>
+    <dl>
+      <dt>今回提出する課題</dt>
+      <dd>コーディング（AIツール比較メモ）</dd>
+
+      <dt>成果物</dt>
+      <dd><a href="https://github.com/taka10-web/ai-tool-memo">https://github.com/taka10-web/ai-tool-memo</a><br>index.html をブラウザで直接開けば動作します（ビルド・インストールは不要です）。</dd>
+
+      <dt>今回使用したAI・ツール</dt>
+      <dd><ul class="tags"><li>ChatGPT</li><li>Claude Code</li></ul></dd>
+
+      <dt>AIへ入力した主な指示</dt>
+      <dd class="text">Claude Code（Claude Opus 5.5）に、要件をまとめた指示書を渡しました。主な内容は次のとおりです。
+・HTML、CSS、Vanilla JavaScriptだけで、ビルド不要の「AIツール比較メモ」を作る
+・追加、編集、削除、検索、料金ソート、保存、リセット、CSV出力、入力検証、安全な表示、スマホ対応、READMEを実装する
+・JSDocで型を定義し、保存データは実行時に検証する
+・保存の失敗やデータの破損があっても止めない
+・CSVはエスケープと数式対策を行う
+・要件整理から設計、実装、レビュー、テスト、READMEまで進め、確認していない項目は正直に記録する
+その後、CSVを選択式にし、全件選択を置く機能追加を指示しました。</dd>
+
+      <dt>AIの出力から修正した点と理由</dt>
+      <dd class="text">AIにChromeで画面を確認させ、見つかった問題を修正させました。
+・スマホ幅で編集・削除ボタンが広がらない：CSSの優先順位を修正
+・PC幅で最大桁の金額がメモ列にはみ出す：折り返し禁止の指定を解除
+・表の罫線がずれる：ボタンを内側の要素で並べる構造に変更
+・ヘッダー下の余白が消えていた：指定を分離
+・スマホのカードでチェックボックスが1行を占めていた：カード右上に配置
+・通知が読み上げソフトに伝わらないおそれがあった：通知欄を常に残す方式に変更
+また、料金欄は不正な文字列と空欄を区別するため、文字入力欄で受け取って独自に検証しています。</dd>
+
+      <dt>判断に迷った点・確認できなかった点</dt>
+      <dd class="text">【判断に迷った点】
+・CSVの全件選択は、検索中でも登録済みの全件を対象にしました（全件を出力する機能という意図に合わせ、選択件数を常に表示しています）
+・選択式にしたため、0件でヘッダーだけのCSVは画面から出せなくなりました（READMEに記載）
+・破損した保存データは自動保存で上書きせず、確認付きのリセットでのみ復旧します
+【確認できなかった点】
+CSVファイルの実際の保存、Excelでの表示、Chrome以外のブラウザと実機、キーボードだけの操作と読み上げソフト、実際の容量超過</dd>
+
+      <dt>提出前に確認したこと</dt>
+      <dd class="text">・型チェック：エラー0件
+・単体テスト：56件すべて成功（入力検証、保存データの検証、検索、ソート、CSV、保存失敗時の動作）
+・Chromeでの正常系：追加・編集・削除、検索・ソート後の編集・削除、再読み込み後の復元、リセット、CSVの選択出力
+・Chromeでの異常系：全件削除後の再読み込み、破損データの保護、保存失敗時の未保存表示、HTMLタグ風の文字列が文字のまま表示されること
+・320px、375px、1280px幅での表示
+・リポジトリのコミット作成者を非公開用のアドレスにしたこと</dd>
+
+      <dt>実際にかかった作業時間</dt>
+      <dd>15〜30分</dd>
+
+      <dt>担当者への作業完了報告</dt>
+      <dd class="text">ご担当者様
+課題「AIツール比較メモ」が完了しましたので、ご報告いたします。
+■提出物：https://github.com/taka10-web/ai-tool-memo（index.htmlを開けば動作し、ビルドは不要です）
+■実装：必須機能をすべて実装しました。CSVは行ごとの選択と全件選択で出力対象を選べます。入力検証、保存失敗・データ破損への対応、安全な表示、CSVの数式対策、JSDocによる型チェックを含みます。
+■確認：型チェックはエラー0件、単体テストは56件すべて成功。Chromeで正常系・異常系・スマホ幅を確認しました。
+■未確認：Excel、Chrome以外のブラウザ、実機での確認（詳細はREADMEに記載）
+■AI利用：実装・テスト・READMEはClaude Codeで作成し、READMEに明記しています。
+ご確認をお願いいたします。</dd>
+    </dl>
+  </section>
+
+  <section aria-labelledby="s3">
+    <h2 id="s3"><span class="step">STEP 3</span>経験・得意領域・稼働条件</h2>
+    <dl>
+      <dt>使用経験のあるAI・ツール</dt>
+      <dd><ul class="tags"><li>ChatGPT</li><li>画像生成AI</li><li>Cursor・GitHub Copilot等</li></ul></dd>
+
+      <dt>AIの利用頻度</dt>
+      <dd>ほぼ毎日</dd>
+
+      <dt>経験のある業務</dt>
+      <dd><ul class="tags"><li>情報収集・データ整理</li></ul></dd>
+
+      <dt>エージェント・運用領域</dt>
+      <dd><ul class="tags"><li>Web調査エージェント運用</li><li>ワークフロー自動化</li><li>API・外部サービス連携</li></ul></dd>
+
+      <dt>制作・編集領域</dt>
+      <dd><ul class="tags"><li>文章構成・編集</li><li>画像制作・修正</li></ul></dd>
+
+      <dt>複数領域を組み合わせた実務経験</dt>
+      <dd>自主制作・学習プロジェクトで経験した</dd>
+
+      <dt>複合スキルを使った実務例</dt>
+      <dd class="text">モバイルアプリ（ネイティブアプリ＋クラウド同期）の開発を、コーディングエージェントを中心に担当。要件整理 → Issue化と優先順位管理 → エージェントへの実装依頼 → 型チェック・自動テスト・CIでの検証 → レビュー用エージェントによるコード・セキュリティ確認 → リリース判断まで一貫して実施。エージェントの作業ルールを文書化し、品質を保ったまま並行開発できる体制を整備。</dd>
+
+      <dt>通常担当での希望時間単価</dt>
+      <dd>1,700円 / 時間</dd>
+
+      <dt>複合領域を担当する場合の希望時間単価</dt>
+      <dd>2,500円 / 時間</dd>
+
+      <dt>時間単価に反映してほしい強み</dt>
+      <dd><ul class="tags"><li>コーディング・自動化</li><li>情報精度・品質管理</li><li>要件整理から納品までの推進</li></ul></dd>
+
+      <dt>週の稼働可能時間</dt>
+      <dd>5〜10時間</dd>
+
+      <dt>主な稼働時間帯</dt>
+      <dd><ul class="tags"><li>平日夜</li><li>土日午後</li></ul></dd>
+
+      <dt>稼働開始可能時期</dt>
+      <dd>1週間以内</dd>
+
+      <dt>業務環境</dt>
+      <dd>PC・安定した通信環境ともにある</dd>
+    </dl>
+  </section>
+
+  <section aria-labelledby="s4">
+    <h2 id="s4"><span class="step">STEP 4</span>確認事項</h2>
+    <dl>
+      <dt>同意した項目</dt>
+      <dd><ul class="tags"><li>提出物は本人が今回の課題として作成しました</li><li>AIを使用した部分を申告しました</li><li>提出物を選考目的で確認することに同意します</li><li>業務上の秘密保持に同意します</li></ul></dd>
+    </dl>
+  </section>
+
+  <footer>応募フォームの入力内容をそのまま転記しています。</footer>
+</main>
+</body>
+</html>

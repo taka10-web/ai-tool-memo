@@ -46,6 +46,8 @@ ai-tool-memo/
 
 npm install・ビルド・サーバーの起動は不要です。
 
+GitHub Pages でも公開しています: https://taka10-web.github.io/ai-tool-memo/
+
 ## 機能説明
 
 | 機能 | 操作方法 |
