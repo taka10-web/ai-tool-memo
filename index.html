@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="AIツールの名前・月額料金・メモを記録して比較するブラウザアプリ">
+    <title>AIツール比較メモ</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <header class="app-header">
+      <div class="container app-header-inner">
+        <div>
+          <h1 class="app-title">AIツール比較メモ</h1>
+          <p class="app-lead">AIツールの月額料金とメモを登録して、比較・整理できます。</p>
+        </div>
+        <p class="save-status" id="save-status" data-state="saved">保存済み</p>
+      </div>
+    </header>
+
+    <main class="container app-main">
+      <div class="alert" id="storage-alert" role="alert" hidden></div>
+
+      <div class="layout">
+        <section class="panel form-panel" aria-labelledby="form-title">
+          <h2 class="panel-title" id="form-title">新しいAIツールを追加</h2>
+          <!-- 独自の日本語エラーメッセージを入力欄の近くに出すため、ブラウザ標準の検証は無効化する -->
+          <form class="tool-form" id="tool-form" novalidate>
+            <div class="field">
+              <label class="field-label" for="tool-name">
+                名前 <span class="badge badge-required">必須</span>
+              </label>
+              <input class="input" id="tool-name" name="name" type="text" autocomplete="off" aria-required="true" aria-describedby="tool-name-error">
+              <p class="field-error" id="tool-name-error"></p>
+            </div>
+
+            <div class="field">
+              <label class="field-label" for="tool-monthly">
+                月額料金 <span class="badge badge-required">必須</span>
+              </label>
+              <div class="input-with-unit">
+                <!-- type="number" は不正な文字列を空文字として返し空欄と区別できないため、text で受けて検証する -->
+                <input class="input" id="tool-monthly" name="monthly" type="text" inputmode="numeric" autocomplete="off" aria-required="true" aria-describedby="tool-monthly-hint tool-monthly-error">
+                <span class="input-unit" aria-hidden="true">円</span>
+              </div>
+              <p class="field-hint" id="tool-monthly-hint">0以上の整数で入力してください。無料の場合は 0 です。</p>
+              <p class="field-error" id="tool-monthly-error"></p>
+            </div>
+
+            <div class="field">
+              <label class="field-label" for="tool-memo">
+                メモ <span class="badge badge-optional">任意</span>
+              </label>
+              <textarea class="input textarea" id="tool-memo" name="memo" rows="4"></textarea>
+            </div>
+
+            <div class="form-actions">
+              <button class="button button-primary" id="submit-button" type="submit">追加する</button>
+              <button class="button" id="cancel-edit-button" type="button" hidden>編集をキャンセル</button>
+            </div>
+          </form>
+        </section>
+
+        <section class="panel list-panel" aria-labelledby="list-title">
+          <div class="list-header">
+            <h2 class="panel-title" id="list-title" tabindex="-1">登録一覧</h2>
+            <p class="result-count" id="result-count" aria-live="polite"></p>
+          </div>
+
+          <div class="toolbar">
+            <div class="field">
+              <label class="field-label" for="search-input">検索</label>
+              <input class="input" id="search-input" type="search" placeholder="名前・メモで検索" autocomplete="off">
+            </div>
+            <div class="field">
+              <label class="field-label" for="sort-select">並び順</label>
+              <select class="input select" id="sort-select">
+                <option value="registered">登録順</option>
+                <option value="asc">月額料金が安い順（昇順）</option>
+                <option value="desc">月額料金が高い順（降順）</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- 表のヘッダーはスマートフォンのカード表示で隠れるため、全件選択は表の外に置く -->
+          <div class="selection-bar">
+            <label class="select-all">
+              <input id="select-all" type="checkbox">
+              全件選択
+            </label>
+            <p class="selection-count" id="selection-count" aria-live="polite">0件を選択中</p>
+          </div>
+
+          <table class="tool-table" id="tool-table">
+            <caption class="visually-hidden">登録済みのAIツール一覧</caption>
+            <colgroup>
+              <col class="col-select">
+              <col class="col-name">
+              <col class="col-monthly">
+              <col class="col-memo">
+              <col class="col-actions">
+            </colgroup>
+            <thead>
+              <tr>
+                <th scope="col"><span class="visually-hidden">CSV出力の対象</span></th>
+                <th scope="col">名前</th>
+                <th scope="col" class="cell-monthly">月額料金</th>
+                <th scope="col">メモ</th>
+                <th scope="col"><span class="visually-hidden">操作</span></th>
+              </tr>
+            </thead>
+            <tbody id="tool-list"></tbody>
+          </table>
+          <p class="empty-message" id="empty-message" hidden></p>
+
+          <div class="list-actions">
+            <button class="button" id="csv-button" type="button">選択した0件をCSV出力</button>
+            <button class="button button-danger-outline" id="reset-button" type="button">初期状態へ戻す</button>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- 読み上げを確実にするため、ライブリージョンは常に DOM に残し、視覚的な表示だけを切り替える -->
+    <div class="notice" id="notice" data-open="false">
+      <p class="notice-message" id="notice-message" role="status" aria-live="polite"></p>
+      <button class="notice-close" id="notice-close" type="button" aria-label="通知を閉じる" hidden>閉じる</button>
+    </div>
+  </body>
+</html>
